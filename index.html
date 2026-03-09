@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "vszhz7tvyw");
+</script>
+<meta charset="UTF-8">
+<title>Student Attendance System</title>
+
+<style>
+body{
+font-family: Arial;
+background:#f4f6f9;
+text-align:center;
+}
+
+.container{
+width:80%;
+margin:auto;
+background:white;
+padding:20px;
+margin-top:40px;
+border-radius:10px;
+box-shadow:0 0 10px rgba(0,0,0,0.2);
+}
+
+h1{
+color:#333;
+}
+
+input{
+padding:8px;
+margin:10px;
+}
+
+button{
+padding:8px 12px;
+margin:5px;
+border:none;
+background:#4CAF50;
+color:white;
+cursor:pointer;
+border-radius:5px;
+}
+
+button:hover{
+background:#45a049;
+}
+
+table{
+width:100%;
+margin-top:20px;
+border-collapse:collapse;
+}
+
+th,td{
+padding:10px;
+border:1px solid #ddd;
+}
+
+.present{
+background:#d4edda;
+}
+
+.absent{
+background:#f8d7da;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Student Attendance System</h1>
+
+<input type="text" id="studentName" placeholder="Enter student name">
+<button onclick="addStudent()">Add Student</button>
+
+<table>
+<thead>
+<tr>
+<th>Student Name</th>
+<th>Status</th>
+<th>Action</th>
+</tr>
+</thead>
+
+<tbody id="studentList"></tbody>
+</table>
+
+</div>
+
+<script>
+
+let students = JSON.parse(localStorage.getItem("students")) || [];
+
+function saveData(){
+localStorage.setItem("students", JSON.stringify(students));
+}
+
+function addStudent(){
+let name = document.getElementById("studentName").value;
+
+if(name === ""){
+alert("Enter student name");
+return;
+}
+
+students.push({
+name:name,
+status:"Absent"
+});
+
+document.getElementById("studentName").value="";
+saveData();
+displayStudents();
+}
+
+function markPresent(index){
+students[index].status="Present";
+saveData();
+displayStudents();
+}
+
+function markAbsent(index){
+students[index].status="Absent";
+saveData();
+displayStudents();
+}
+
+function displayStudents(){
+
+let list=document.getElementById("studentList");
+list.innerHTML="";
+
+students.forEach((student,index)=>{
+
+let row=document.createElement("tr");
+
+row.className = student.status === "Present" ? "present" : "absent";
+
+row.innerHTML=`
+<td>${student.name}</td>
+<td>${student.status}</td>
+<td>
+<button onclick="markPresent(${index})">Present</button>
+<button onclick="markAbsent(${index})">Absent</button>
+</td>
+`;
+
+list.appendChild(row);
+
+});
+}
+
+displayStudents();
+
+</script>
+
+</body>
+</html>
